@@ -28,12 +28,11 @@ func LoginHandler(response http.ResponseWriter, request *http.Request, params ht
     // parse do template de login
     tmpl, err := template.ParseFiles(path.Join("templates","login.html"))
 
-    if err != nil {
-        http.Error(response, err.Error(), http.StatusInternalServerError)
-        return
+    if err == nil {
+        err = tmpl.Execute(response,message); err != nil
     }
 
-    if err := tmpl.Execute(response,message); err != nil {
+    if err != nil {
         http.Error(response, err.Error(), http.StatusInternalServerError)
         return
     }
