@@ -1,0 +1,129 @@
+<!--
+Author: W3layouts
+Author URL: http://w3layouts.com
+License: Creative Commons Attribution 3.0 Unported
+License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Go Workshop</title>
+    <link href="css/style.css" rel='stylesheet' type='text/css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Flat Tab Listed Forms ,Login Forms,Sign up Forms,Registration Forms,News latter Forms,Elements"/>
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <!--webfonts-->
+    <link href='//fonts.googleapis.com/css?family=Raleway:400,200,300,500,600,800,700,900' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Philosopher:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
+    <!--//webfonts-->
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+
+</head>
+<body>
+<h1>Olá, {{.Name}}</h1>
+<div class="infom">
+    <div id="verticalTab" class="resp-vtabs" style="display: block; width: 100%; margin: 0px;"><!-- start vertical Tabs-->
+        <ul class="resp-tabs-list">
+            <li class="resp-tab-item"><span><img src="images/user.png" alt="" /> </span></li>
+            <li class="resp-tab-item"><span><img src="images/password.png" alt=""/> </span></li>
+            <li class="resp-tab-item"><span><img src="images/register.png" alt=""/> </span></li>
+            <li class="resp-tab-item"><span><img src="images/recover.png" alt=""/> </span></li>
+        </ul>
+        <div class="resp-tabs-container">
+            <span class="resp-arrow"></span><i class="icon_1"></i>
+            <div class="new_posts resp-tab-content">
+                <div class="contact-form">
+                    <form action="/user" method="post">
+                        <div class="contact-text1"><h2>Seu cadastro</h2>
+                            <input type="text" class="user" name="name" value="{{.Name}}">
+                            <input type="text" class="mail" name="email" value="{{.Email}}">
+                        </div>
+                        <div class="submit">
+                            <input type="submit" value="Salvar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <span class="resp-arrow"></span><i class="icon_4"></i>
+            <div class="new_posts resp-tab-content">
+                <div class="contact-form3">
+                    <form action="/pass" method="post">
+                        <div class="contact-text4"><h3>Sua senha</h3>
+                            <input type="password" name="password" placeholder="Senha" class="lock" required="">
+                            <input type="password" name="confirm" placeholder="Confirme" class="lock" required="">
+                        </div>
+                        <div class="submit">
+                            <input type="submit" value="Salvar">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <span class="resp-arrow"></span><i class="icon_2"></i>
+            <div class="new_posts resp-tab-content">
+                <div class="contact-form3">
+                    <div class="contact-text4"><h3>Seus contatos</h3>
+                        <form>
+                            <input type="text" placeholder="twitter" name="twitter" class="user" required="">
+                            <input type="text" placeholder="linkedin" name="linkedin" class="user" required="">
+                            <input type="text" placeholder="github" name="github" class="user" required="">
+                        </form>
+                    </div>
+                    <div class="submit2">
+                        <input type="submit" value="Salvar">
+                    </div>
+                </div>
+            </div>
+            <span class="resp-arrow"></span><i class="icon_3"></i>
+            <div class="new_posts resp-tab-content">
+                <div class="contact-form2">
+                    <form action="/logout" method="get">
+                        <div class="contact-text3"><h3>Logout</h3>
+                            <br><br><br><br><br><br><br><br><br>
+                        </div>
+                        <div class="submit3">
+                            <input type="submit" value="Sair do sistema">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <script src="js/easyResponsiveTabs.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('#horizontalTab').easyResponsiveTabs({
+                    type: 'default', //Types: default, vertical, accordion
+                    width: 'auto', //auto or any width like 600px
+                    fit: true,   // 100% fit in a container
+                    closed: 'accordion', // Start closed if in accordion view
+                    activate: function(event) { // Callback function if tab is switched
+                        var $tab = $(this);
+                        var $info = $('#tabInfo');
+                        var $name = $('span', $info);
+
+                        $name.text($tab.text());
+
+                        $info.show();
+                    }
+                });
+
+                $('#verticalTab').easyResponsiveTabs({
+                    type: 'vertical',
+                    width: 'auto',
+                    fit: true
+                });
+            });
+        </script>
+    </div>
+    <div class="clearfix"> </div>
+</div>
+<!--start-copyright-->
+<div class="copy-right">
+    <p>&copy; 2015 Flat Tab Listed Forms. All Rights Reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+</div>
+<!--//end-copyright-->
+</body>
+</html>

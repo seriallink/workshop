@@ -1,15 +1,11 @@
-# Compiled Object files, Static and Dynamic libs (Shared Objects)
+# compiled object files, static and dynamic libs
 *.o
 *.a
 *.so
 
-# Folders
+# folders
 _obj
 _test
-
-# Architecture specific extensions/prefixes
-*.[568vq]
-[568vq].out
 
 *.cgo1.go
 *.cgo2.c
@@ -22,3 +18,10 @@ _testmain.go
 *.exe
 *.test
 *.prof
+
+# project files
+.idea
+workshop.iml
+
+# db files
+workshop.sqlite
