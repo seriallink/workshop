@@ -17,12 +17,11 @@ func HomeHandler(response http.ResponseWriter, request *http.Request, params htt
     // parse do template da home
     tmpl, err := template.ParseFiles(path.Join("templates","home.html"))
 
-    if err != nil {
-        http.Error(response, err.Error(), http.StatusInternalServerError)
-        return
+    if err == nil {
+        err = tmpl.Execute(response,user); err != nil
     }
 
-    if err := tmpl.Execute(response,user); err != nil {
+    if err != nil {
         http.Error(response, err.Error(), http.StatusInternalServerError)
         return
     }
