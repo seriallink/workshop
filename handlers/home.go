@@ -18,7 +18,7 @@ func HomeHandler(response http.ResponseWriter, request *http.Request, params htt
     tmpl, err := template.ParseFiles(path.Join("templates","home.html"))
 
     if err == nil {
-        err = tmpl.Execute(response,user); err != nil
+        err = tmpl.Execute(response,user)
     }
 
     if err != nil {

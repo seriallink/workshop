@@ -29,7 +29,7 @@ func LoginHandler(response http.ResponseWriter, request *http.Request, params ht
     tmpl, err := template.ParseFiles(path.Join("templates","login.html"))
 
     if err == nil {
-        err = tmpl.Execute(response,message); err != nil
+        err = tmpl.Execute(response,message)
     }
 
     if err != nil {
