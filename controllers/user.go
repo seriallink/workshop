@@ -1,16 +1,17 @@
-package handlers
+package controllers
 
 import (
     "net/http"
-
     "github.com/goincremental/negroni-sessions"
     "github.com/julienschmidt/httprouter"
-
-    "github.com/seriallink/workshop/database"
     "github.com/seriallink/workshop/models"
 )
 
-func UserSaveHandler(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
+type UserController struct{
+    MainController
+}
+
+func (c UserController) SaveUser(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
 
     // recupera o user na session
     session := sessions.GetSession(request)
@@ -20,7 +21,7 @@ func UserSaveHandler(response http.ResponseWriter, request *http.Request, params
     user.Name = request.FormValue("name")
     user.Email = request.FormValue("email")
 
-    err := database.SaveUser(&user)
+    err := c.Get().ORM.Save(&user).Error
 
     if err == nil {
 
@@ -36,13 +37,12 @@ func UserSaveHandler(response http.ResponseWriter, request *http.Request, params
     }
 
     if err != nil {
-        http.Error(response, err.Error(), http.StatusInternalServerError)
-        return
+        c.Get().Render.HTML(response, http.StatusInternalServerError, "500", nil)
     }
 
 }
 
-func UserPassHandler(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (c UserController) SavePass(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
 
     // recupera o user na session
     session := sessions.GetSession(request)
@@ -55,11 +55,14 @@ func UserPassHandler(response http.ResponseWriter, request *http.Request, params
     // confere as senhas
     if password == confirm {
 
-        /// salva nova senha do user
-        err := database.SavePass(user.Id, password)
+        // atualiza o model
+        user.Password = password
+
+        // salva nova senha no banco
+        err := c.Get().ORM.Save(&user).Error
 
         if err != nil {
-            http.Error(response, err.Error(), http.StatusInternalServerError)
+            c.Get().Render.HTML(response, http.StatusInternalServerError, "500", nil)
             return
         }
 

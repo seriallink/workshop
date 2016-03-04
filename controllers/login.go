@@ -1,21 +1,23 @@
-package handlers
+package controllers
 
 import (
-    "html/template"
     "net/http"
-    "path"
     "strings"
-
     "github.com/goincremental/negroni-sessions"
+    "github.com/jinzhu/gorm"
     "github.com/julienschmidt/httprouter"
-    "github.com/seriallink/workshop/database"
+    "github.com/seriallink/workshop/models"
 )
+
+type LoginController struct {
+    MainController
+}
 
 type LoginMessage struct {
     Message string
 }
 
-func LoginHandler(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (c *LoginController) Form(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
 
     // mensagem padrao
     message := LoginMessage{"Sign In"}
@@ -25,26 +27,21 @@ func LoginHandler(response http.ResponseWriter, request *http.Request, params ht
         message.Message = "Login invalido"
     }
 
-    // parse do template de login
-    tmpl, err := template.ParseFiles(path.Join("templates","login.html"))
-
-    if err == nil {
-        err = tmpl.Execute(response,message)
-    }
-
-    if err != nil {
-        http.Error(response, err.Error(), http.StatusInternalServerError)
-        return
-    }
+    // renderiza o form de login
+    c.Get().Render.HTML(response, http.StatusOK, "login", nil)
 
 }
 
-func LoginAction(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (c *LoginController) Login(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
 
-    // valida o login no banco de dados
-    email := request.FormValue("email")
-    password := request.FormValue("password")
-    user, err := database.GetUser(email, password)
+    // inicializa o model com os parametros de busca
+    user := &models.User{
+        Email: request.FormValue("email"),
+        Password: request.FormValue("password"),
+    }
+
+    // procura o login no banco de dados
+    err := c.Get().ORM.Where(user).Find(user).Error
 
     if err == nil {
 
@@ -58,21 +55,19 @@ func LoginAction(response http.ResponseWriter, request *http.Request, params htt
 
     }
 
-
     // usuario/senha nao encontrado
-    if err.Error() == "sql: no rows in result set" {
+    if err == gorm.RecordNotFound {
         http.Redirect(response, request, "/login", http.StatusFound)
         return
     }
 
     if err != nil {
-        http.Error(response, err.Error(), http.StatusInternalServerError)
-        return
+        c.Get().Render.HTML(response, http.StatusInternalServerError, "500", nil)
     }
 
 }
 
-func LogoutAction(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
+func (c *LoginController) Logout(response http.ResponseWriter, request *http.Request, params httprouter.Params) {
 
     // remove o user na session
     session := sessions.GetSession(request)

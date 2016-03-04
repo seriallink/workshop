@@ -10,16 +10,19 @@ import (
     "github.com/satori/go.uuid"
 
     "github.com/seriallink/workshop/database"
-    "github.com/seriallink/workshop/routers"
     "github.com/seriallink/workshop/models"
+    "github.com/seriallink/workshop/orm"
+    "github.com/seriallink/workshop/routers"
 )
 
 func main() {
 
     // inicia o banco de dados
+    orm.Init()
     database.Init()
 
     // fecha conexao com o banco
+    defer orm.Close()
     defer database.Close()
 
     // registra o model user
@@ -30,8 +33,9 @@ func main() {
     middleware.Use(negroni.NewStatic(http.Dir("templates")))
     middleware.Use(sessions.Sessions("workshop",cookiestore.New([]byte(uuid.NewV4().String()))))
     middleware.UseFunc(Authenticate)
-    middleware.UseHandler(routers.GetRouters())
-    middleware.Run(":8080")
+    //middleware.UseHandler(routers.GetHandlers())
+    middleware.UseHandler(routers.GetControllers())
+    middleware.Run(":8081")
 
 }
 
@@ -43,7 +47,7 @@ func Authenticate(response http.ResponseWriter, request *http.Request, handler h
     if request.RequestURI == "/login" || user != nil {
         handler(response,request)
     } else {
-        http.Redirect(response, request, "/login", 302)
+        http.Redirect(response, request, "/login", http.StatusFound)
     }
 
 }

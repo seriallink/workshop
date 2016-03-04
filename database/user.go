@@ -4,15 +4,7 @@ import (
     "github.com/seriallink/workshop/models"
 )
 
-func CreateUser() (user models.User, err error) {
-
-    // usuario default da nossa app
-    user = models.User{
-        Id:"75f0a8d6-736f-4d8a-8ff4-e37573a0a516",
-        Name:"John Doe",
-        Email:"my@email.com",
-        Password:"workshop",
-    }
+func CreateUser(user *models.User) (err error) {
 
     // checa se o usuario existe
     count := -1
